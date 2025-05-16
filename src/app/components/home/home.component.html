@@ -1,0 +1,147 @@
+<!-- src/app/components/home/home.component.html -->
+<div class="hero-section bg-primary-custom py-5">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h1 class="display-4 fw-bold" style="color: #FFE5FF;">
+            Khám phá thế giới<br>
+            <span class="d-block book-title">SÁCH</span>
+          </h1>
+          <p class="lead text-white">Cửa hàng sách trực tuyến với hàng ngàn đầu sách chất lượng</p>
+          <div class="mt-4">
+            <a routerLink="/books" class="btn btn-light btn-lg me-2">
+              <i class="fas fa-book me-2"></i>Khám phá ngay
+            </a>
+            <a routerLink="/sale" class="btn btn-outline-light btn-lg">
+              <i class="fas fa-tag me-2"></i>Xem khuyến mãi
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <img src="assets/images/collections/educational-collection.jpg" alt="Educational Book Collection" class="img-fluid rounded shadow">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container my-5">
+    <!-- Banner Sách của tháng -->
+    <section class="mb-5">
+      <div class="book-of-month-banner">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <div class="banner-content">
+              <h2 class="banner-title">Sách của tháng</h2>
+              <p class="banner-description">Khám phá các tác phẩm được tuyển chọn đặc biệt tháng này với giá ưu đãi đến 25%!</p>
+              <a routerLink="/sale" class="btn btn-light">
+                <i class="fas fa-tags me-2"></i>Xem ngay
+              </a>
+            </div>
+          </div>
+          <div class="col-md-4 text-center d-none d-md-block">
+            <div class="books-stack">
+              <i class="fas fa-book fa-4x mb-2" style="color: rgba(255,255,255,0.9);"></i>
+              <div class="discount-badge">-25%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Sách mới nhất -->
+    <section class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary-custom">Sách mới nhất</h2>
+        <a routerLink="/books" class="btn btn-outline-primary-custom">Xem tất cả</a>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-3 mb-4" *ngFor="let book of newBooks">
+          <div class="book-card h-100">
+            <div class="book-image-wrapper" [style.background-image]="'url(' + book.imageUrl + ')'">
+              <span *ngIf="book.isPartOfSeries" class="badge bg-primary-custom">
+                {{ book.seriesPosition }}/{{ book.seriesTotal }}
+              </span>
+              <span *ngIf="!book.isPartOfSeries" class="badge bg-primary-custom">Mới</span>
+              <div class="book-title-simple">{{book.title}}</div>
+              <div class="book-info-overlay">
+                <h5 class="book-title">{{book.title}}</h5>
+                <p class="book-author">{{book.author}}</p>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="fw-bold book-price">{{book.price | currency:'VND':'symbol':'1.0-0'}}</span>
+                  <div class="book-rating">
+                    <i class="fas fa-star"></i>
+                    <span>{{book.rating}}</span>
+                  </div>
+                </div>
+                <div class="book-actions">
+                  <a [routerLink]="['/book', book.id]" class="btn-details">Chi tiết</a>
+                  <button class="btn-cart" (click)="addToCart(book)" title="Thêm vào giỏ">
+                    <i class="fas fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Danh mục nổi bật -->
+    <section class="mb-5">
+      <h2 class="text-primary-custom mb-4">Danh mục sách</h2>
+      <div class="row g-4">
+        <div class="col-md-4" *ngFor="let category of categories">
+          <div class="card bg-light border-0 h-100">
+            <div class="card-body text-center p-4">
+              <i class="{{category.icon}} fa-3x text-primary-custom mb-3"></i>
+              <h3 class="card-title">{{category.name}}</h3>
+              <p class="card-text">{{category.description}}</p>
+              <a [routerLink]="['/books']" [queryParams]="{category: category.id}" class="btn btn-outline-primary-custom mt-2">
+                Khám phá
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Sách bán chạy -->
+    <section class="mb-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary-custom">Sách bán chạy</h2>
+        <a routerLink="/books" [queryParams]="{sort: 'bestseller'}" class="btn btn-outline-primary-custom">Xem tất cả</a>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-3 mb-4" *ngFor="let book of bestSellerBooks">
+          <div class="book-card h-100">
+            <div class="book-image-wrapper" [style.background-image]="'url(' + book.imageUrl + ')'">
+              <span *ngIf="book.isPartOfSeries" class="badge bg-primary-custom">
+                {{ book.seriesPosition }}/{{ book.seriesTotal }}
+              </span>
+              <span *ngIf="!book.isPartOfSeries" class="badge bg-danger">Hot</span>
+              <div class="book-title-simple">{{book.title}}</div>
+              <div class="book-info-overlay">
+                <h5 class="book-title">{{book.title}}</h5>
+                <p class="book-author">{{book.author}}</p>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="fw-bold book-price">{{book.price | currency:'VND':'symbol':'1.0-0'}}</span>
+                  <div class="book-rating">
+                    <i class="fas fa-star"></i>
+                    <span>{{book.rating}}</span>
+                  </div>
+                </div>
+                <div class="book-actions">
+                  <a [routerLink]="['/book', book.id]" class="btn-details">Chi tiết</a>
+                  <button class="btn-cart" (click)="addToCart(book)" title="Thêm vào giỏ">
+                    <i class="fas fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>

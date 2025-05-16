@@ -1,0 +1,121 @@
+/* Manage Books Styles */
+
+/* Book cover thumbnail styling */
+.book-cover {
+  width: 45px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  img.img-small {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* Status badges styling */
+.badge {
+  padding: 0.5em 0.75em;
+  font-weight: 500;
+  font-size: 0.8rem;
+  
+  &.bg-success {
+    background-color: #28a745 !important;
+  }
+  
+  &.bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529;
+  }
+  
+  &.bg-danger {
+    background-color: #dc3545 !important;
+  }
+  
+  &.bg-info {
+    background-color: #17a2b8 !important;
+  }
+  
+  &.bg-secondary {
+    background-color: #6c757d !important;
+  }
+}
+
+/* Stock status styling */
+.text-stock-ok {
+  color: #28a745;
+  font-weight: 500;
+}
+
+.text-stock-low {
+  color: #ffc107;
+  font-weight: 500;
+}
+
+.text-stock-out {
+  color: #dc3545;
+  font-weight: 500;
+}
+
+/* Table styling */
+.table {
+  margin-bottom: 0;
+  
+  th {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--dark-color);
+    border-bottom-width: 1px;
+  }
+  
+  td {
+    vertical-align: middle;
+    font-size: 0.95rem;
+  }
+  
+  .btn-group {
+    .btn {
+      padding: 0.25rem 0.5rem;
+    }
+  }
+}
+
+/* Filter section styling */
+.card {
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  
+  .card-body {
+    padding: 1.25rem;
+  }
+}
+
+.form-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    
+    .btn {
+      border-radius: 4px !important;
+      margin-left: 0 !important;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .book-cover {
+    width: 35px;
+    height: 50px;
+  }
+}

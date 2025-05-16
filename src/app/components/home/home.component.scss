@@ -1,0 +1,430 @@
+/* Home component styles */
+
+/* Book Card Styling using book-1.jpg as background */
+.book-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.book-image-wrapper {
+  position: relative;
+  height: 100%;
+  min-height: 420px;
+  background-size: cover; /* Cover để hình ảnh lấp đầy toàn bộ card */
+  background-position: center top; /* Hiển thị từ trên xuống */
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
+  overflow: hidden; /* Đảm bảo overlay không tràn ra ngoài */
+  transition: all 0.3s ease;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 0.3s ease;
+    z-index: 1;
+  }
+}
+
+.book-card:hover .book-image-wrapper:before {
+  background-color: rgba(0, 0, 0, 0.3); /* Tối đi khi hover */
+}
+
+.book-title-simple {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 15px;
+  color: white;
+  font-weight: bold;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5) 60%, transparent);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+  z-index: 2;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.1rem;
+}
+
+/* Ẩn tiêu đề đơn giản khi hiển thị overlay đầy đủ */
+.book-card:hover .book-title-simple {
+  opacity: 0;
+}
+
+.book-info-overlay {
+  padding: 20px;
+  color: white;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 1), 0 2px 8px rgba(0, 0, 0, 1), 0 0 15px rgba(0, 0, 0, 0.9);
+  margin-top: auto;
+  position: absolute; /* Thay đổi từ relative thành absolute */
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8); /* Tăng độ đậm của background */
+  bottom: 0; /* Định vị ở dưới cùng */
+  transform: translateY(100%); /* Ban đầu ẩn hoàn toàn bên dưới */
+  transition: transform 0.3s ease-in-out; /* Thêm hiệu ứng chuyển động mượt mà */
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5); /* Thêm đổ bóng phía trên */
+  z-index: 3; /* Đảm bảo hiển thị trên book-title-simple */
+}
+
+/* Khi hover vào book-card, hiển thị overlay */
+.book-card:hover .book-info-overlay {
+  transform: translateY(0); /* Hiển thị overlay */
+}
+
+/* Xóa lớp overlay mờ thêm vào từ before vì đã thêm background trực tiếp vào book-info-overlay */
+
+.book-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 1.1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  color: white; /* Thêm màu trắng cho tiêu đề */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 1), 0 0 10px rgba(0, 0, 0, 1); /* Tăng cường shadow cho tiêu đề */
+}
+
+.book-author {
+  font-style: italic;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  opacity: 1; /* Tăng opacity cho text rõ hơn */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 1), 0 0 8px rgba(0, 0, 0, 1); /* Tăng cường shadow */
+}
+
+.book-price {
+  color: white; /* Màu trắng để độ tương phản cao nhất */
+  font-size: 1.2rem;
+  font-weight: 700; /* Tăng độ đậm */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 1), 0 0 10px rgba(0, 0, 0, 1); /* Shadow đậm nhất với glow effect */
+}
+
+.book-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 1), 0 0 8px rgba(0, 0, 0, 1);
+}
+
+.book-rating i {
+  color: #FFD700; /* Vàng đậm hơn */
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.9)) brightness(1.2); /* Tăng cường drop shadow và độ sáng cho icon */
+}
+
+.book-actions {
+  display: grid;
+  grid-template-columns: 1fr auto; /* Thay đổi từ 1fr 1.5fr thành 1fr auto */
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-details, .btn-cart {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-details {
+  background-color: rgba(0, 0, 0, 0.7); /* Nền đen đậm hơn cho độ tương phản cao */
+  border: 1px solid white;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 0, 0, 0.5);
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 0, 0, 0.7);
+    transform: translateY(-2px);
+    border-color: #ffffff;
+  }
+  
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: 0.5s;
+  }
+  
+  &:hover:after {
+    left: 100%;
+  }
+}
+
+.btn-cart {
+  background-color: #7c3aed; /* Màu tím đậm hơn */
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6), 0 0 15px rgba(124, 58, 237, 0.4); /* Shadow và glow effect */
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+  width: 40px; /* Chiều rộng phù hợp cho icon */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: #6d28d9; /* Màu tím đậm hơn khi hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(124, 58, 237, 0.7);
+    transform: translateY(-2px) scale(1.05);
+    
+    .fas.fa-cart-plus {
+      animation: cartBounce 0.5s ease;
+    }
+  }
+}
+
+/* Animation for cart icon */
+@keyframes cartBounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Đã loại bỏ hiệu ứng hover của các nút */
+
+.badge {
+  padding: 6px 10px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  z-index: 5; /* Tăng z-index cao hơn để đảm bảo badge luôn hiển thị trên cùng */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); /* Thêm bóng đậm hơn để nổi bật */
+  position: absolute;
+}
+
+/* Badge gọn nhẹ cho số lượng sách trong bộ */
+.badge.bg-primary-custom {
+  top: 10px;
+  right: 10px;
+}
+
+/* Badge cho tên series đã được loại bỏ */
+
+/* Badge "Hot" cho sách bán chạy */
+.badge.bg-danger {
+  top: 10px;
+  right: 10px;
+  background: #dc3545 !important;
+  color: white;
+}
+
+/* Hero section styling */
+.hero-section {
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* Light border at bottom */
+  box-shadow: 
+    0 8px 15px -2px rgba(0, 0, 0, 0.3),
+    0 15px 25px -5px rgba(0, 0, 0, 0.4),
+    0 6px 6px -3px rgba(0, 0, 0, 0.2); /* Triple shadow for more dramatic effect */
+  z-index: 1; /* Ensure the shadow appears above content below it */
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), transparent);
+    z-index: -1;
+  }
+  
+  /* Create a subtle inset highlight at the top to enhance 3D effect */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.5);
+  }
+  
+  h1 {
+    line-height: 1.1;  /* Tighter line spacing for the heading */
+    
+    .book-title {
+      font-size: 1.2em;  /* Larger size for the "SÁCH" text */
+      font-weight: 800;  /* Extra bold */
+      letter-spacing: 3px;  /* Add letter spacing for emphasis */
+      margin-top: 5px;  /* Add a bit more space between the two lines */
+    }
+  }
+}
+
+/* Style for category cards */
+.card.bg-light {
+  background-color: #f0eaf7 !important; /* Darker light purple background that matches the site theme */
+  box-shadow: 0 4px 15px rgba(138, 43, 226, 0.12); /* Enhanced shadow for better depth */
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: #e6dcf5 !important; /* Even darker on hover */
+    box-shadow: 0 8px 25px rgba(138, 43, 226, 0.18);
+  }
+}
+
+/* Book of Month Banner */
+.book-of-month-banner {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #9c27b0 100%);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 100%);
+  }
+  
+  .banner-content {
+    padding-right: 20px;
+    
+    .banner-title {
+      color: white;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .banner-description {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+  }
+  
+  .banner-image {
+    max-height: 180px;
+    transform: rotate(-5deg);
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: rotate(-2deg) scale(1.05);
+    }
+  }
+  
+  .books-stack {
+    position: relative;
+    text-align: center;
+    padding: 20px;
+    
+    .fas {
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+      transition: transform 0.3s ease;
+      
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+    
+    .discount-badge {
+      position: absolute;
+      top: 0;
+      right: 30px;
+      background-color: #e91e63;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      padding: 8px 12px;
+      border-radius: 50%;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+      transform: rotate(15deg);
+      animation: float 3s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes float {
+  0% { transform: rotate(15deg) translateY(0px); }
+  50% { transform: rotate(15deg) translateY(-10px); }
+  100% { transform: rotate(15deg) translateY(0px); }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .book-of-month-banner {
+    text-align: center;
+    padding: 20px;
+    
+    .banner-content {
+      padding-right: 0;
+      margin-bottom: 20px;
+    }
+    
+    .banner-image {
+      max-height: 140px;
+      margin: 0 auto;
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+  .hero-section {
+    h1 {
+      font-size: 2.5rem;  /* Smaller font size on mobile */
+      
+      .book-title {
+        font-size: 1.1em;  /* Adjust size on mobile */
+        letter-spacing: 2px;  /* Slightly less spacing on mobile */
+      }
+    }
+  }
+}

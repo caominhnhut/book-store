@@ -1,0 +1,77 @@
+<!-- src/app/components/header/header.component.html -->
+<header [class.scrolled]="isScrolled">
+    <nav class="navbar navbar-expand-lg bg-primary-custom" [class.navbar-scrolled]="isScrolled">
+      <div class="container">
+        <a class="navbar-brand text-white" routerLink="/">
+          <img src="assets/images/visbook-logo.svg" alt="Vi'sBook Logo" [ngClass]="{'logo-large': !isScrolled, 'logo-small': isScrolled}" height="52" class="d-inline-block align-top">
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link text-white" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Trang chủ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" routerLink="/books" routerLinkActive="active">Sách</a>
+            </li>
+          </ul>
+          
+          <!-- Search form for all screen sizes -->
+          <form class="search-form d-flex me-3">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Tìm kiếm sách...">
+              <button class="btn btn-light" type="submit">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </form>
+          
+          <div class="d-flex align-items-center">
+            
+            <a routerLink="/cart" class="btn btn-outline-light me-2 position-relative">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{cartItemCount}}
+              </span>
+            </a>
+            
+            <!-- Language Selector -->
+            <div class="dropdown me-2 lang-dropdown">
+              <button class="btn btn-outline-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <span>{{ currentLanguage.flag }}</span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                <button *ngFor="let lang of languages" 
+                        class="dropdown-item" 
+                        (click)="changeLanguage(lang)">
+                  <span class="me-2">{{ lang.flag }}</span> {{ lang.name }}
+                </button>
+              </div>
+            </div>
+            
+            <div class="dropdown" *ngIf="isLoggedIn; else loginButton">
+              <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="fas fa-user me-1"></i> {{userName}}
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" routerLink="/profile">Tài khoản</a></li>
+                <li><a class="dropdown-item" routerLink="/orders">Đơn hàng</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" (click)="logout()">Đăng xuất</a></li>
+              </ul>
+            </div>
+            
+            <ng-template #loginButton>
+              <button class="btn btn-outline-light" routerLink="/login">
+                <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
+              </button>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>

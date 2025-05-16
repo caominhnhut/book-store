@@ -1,0 +1,92 @@
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h2 class="text-center text-primary-custom mb-4">
+    <span *ngIf="isAdminLogin">Đăng nhập quản trị</span>
+    <span *ngIf="!isAdminLogin">Đăng nhập</span>
+</h2>
+                    
+                    <div *ngIf="errorMessage" class="alert alert-danger">
+                        {{ errorMessage }}
+                    </div>
+                    
+                    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Email hoặc số điện thoại</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input 
+                                    type="text" 
+                                    id="username" 
+                                    formControlName="username" 
+                                    class="form-control" 
+                                    placeholder="Nhập email hoặc số điện thoại"
+                                    [ngClass]="{'is-invalid': submitted && f['username'].errors}"
+                                >
+                            </div>
+                            <div *ngIf="submitted && f['username'].errors" class="invalid-feedback d-block">
+                                <div *ngIf="f['username'].errors['required']">Email hoặc số điện thoại không được để trống</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật khẩu</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <input 
+                                    [type]="showPassword ? 'text' : 'password'" 
+                                    id="password" 
+                                    formControlName="password" 
+                                    class="form-control" 
+                                    placeholder="Nhập mật khẩu"
+                                    [ngClass]="{'is-invalid': submitted && f['password'].errors}"
+                                >
+                                <span class="input-group-text bg-light cursor-pointer" (click)="togglePasswordVisibility()">
+                                    <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                </span>
+                            </div>
+                            <div *ngIf="submitted && f['password'].errors" class="invalid-feedback d-block">
+                                <div *ngIf="f['password'].errors['required']">Mật khẩu không được để trống</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe" formControlName="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+                        </div>
+                        
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn btn-primary-custom btn-lg" [disabled]="loading">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                                Đăng nhập
+                            </button>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a routerLink="/forgot-password" class="text-decoration-none">Quên mật khẩu?</a>
+                            <div *ngIf="isAdminLogin" class="text-muted small">
+                                <em>Tài khoản demo: admin@bookstore.com / admin123</em>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3 bg-light">
+                    <p class="mb-0">Chưa có tài khoản? <a routerLink="/register" class="text-decoration-none fw-bold">Đăng ký ngay</a></p>
+                    
+                    <!-- Development only - remove in production -->
+                    <div class="mt-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="loginAsMockAdmin()">
+                            Đăng nhập nhanh (Phát triển)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

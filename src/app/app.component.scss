@@ -1,0 +1,28 @@
+/* App component styles */
+
+/* Add padding to main content to prevent it from being hidden under the fixed header */
+main {
+  padding-top: 65px; /* Base padding for large screens */
+  min-height: calc(100vh - 120px); /* Account for footer height - adjust as needed */
+  width: 100%;
+  position: relative;
+}
+
+/* Media queries for responsive layout */
+@media (max-width: 1366px) {
+  main {
+    padding-top: 60px; /* Adjusted padding for MacBook 13" and similar screen sizes */
+  }
+}
+
+@media (max-width: 992px) {
+  main {
+    padding-top: 65px; /* Mid-sized screens */
+  }
+}
+
+@media (max-width: 768px) {
+  main {
+    padding-top: 60px; /* Mobile screens */
+  }
+}

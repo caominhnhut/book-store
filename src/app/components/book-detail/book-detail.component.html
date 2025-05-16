@@ -1,0 +1,242 @@
+<div class="book-detail-container" *ngIf="!loading && book">
+  <div class="breadcrumb-nav">
+    <a [routerLink]="['/']">Trang chủ</a> &gt; 
+    <a [routerLink]="['/books', book.category]">{{ book.category | titlecase }}</a> &gt; 
+    <span>{{ book.title }}</span>
+  </div>
+
+  <div class="book-detail-content">
+    <!-- Phần trái: Hình ảnh và thông tin bộ sách -->
+    <div class="book-image-section">
+      <div class="book-image-container">
+        <img [src]="book.imageUrl" [alt]="book.title" class="book-image">
+        
+        <!-- Badge hiển thị nếu là sách trong bộ -->
+        <div *ngIf="book.isPartOfSeries" class="series-badge">
+          <span>{{ book.seriesPosition }}/{{ book.seriesTotal }}</span>
+        </div>
+        
+        <!-- Badge hiển thị nếu sách là "Sách của tháng" -->
+        <div *ngIf="isBookOfMonth" class="promotion-badge book-of-month-badge">
+          <i class="fas fa-star"></i> Sách của tháng
+        </div>
+        
+        <!-- Badge hiển thị phần trăm giảm giá nếu có -->
+        <div *ngIf="bookPromotion && bookPromotion.discountPercent" class="discount-badge">
+          -{{ bookPromotion.discountPercent }}%
+        </div>
+      </div>
+      
+      <!-- Thông tin bộ sách nếu có -->
+      <div *ngIf="book.isPartOfSeries && seriesBooks.length > 0" class="series-info">
+        <h3 class="series-title">{{ book.seriesName }}</h3>
+        <p class="series-desc">Bộ sách gồm {{ book.seriesTotal }} tập</p>
+        
+        <div class="series-books">
+          <div *ngFor="let seriesBook of seriesBooks" class="series-book-item"
+               [class.active]="seriesBook.id === book.id">
+            <div class="series-book-content">
+              <a [routerLink]="['/book', seriesBook.id]">
+                <div class="series-book-image">
+                  <img [src]="seriesBook.imageUrl" [alt]="seriesBook.title">
+                </div>
+                <div class="series-book-number">Tập {{ seriesBook.seriesPosition }}</div>
+              </a>
+              <button class="series-book-download-btn" 
+                     [disabled]="isDownloadingBook(seriesBook.id)"
+                     (click)="downloadSingleSeriesBook(seriesBook)">
+                <i class="fas fa-download"></i>
+              </button>
+              <div *ngIf="isDownloadingBook(seriesBook.id)" class="series-book-progress">
+                <div class="series-book-progress-bar" 
+                     [style.width.%]="getDownloadProgress(seriesBook.id)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Button tải xuống toàn bộ sách trong bộ -->
+        <div class="download-all-container">
+          <button class="btn btn-primary-outline download-all-btn" 
+                  [disabled]="isDownloadingSeries"
+                  (click)="downloadAllSeriesBooks()">
+            <i class="fas fa-download"></i> 
+            Tải xuống toàn bộ bộ sách
+          </button>
+          
+          <div *ngIf="isDownloadingSeries" class="progress download-progress">
+            <div class="progress-bar" 
+                 [style.width.%]="downloadingSeriesProgress">
+              {{ downloadingSeriesProgress }}%
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Phần phải: Thông tin chi tiết sách -->
+    <div class="book-info-section">
+      <h1 class="book-title">{{ book.title }}</h1>
+      
+      <div class="author-section">
+        <span class="text-label">Tác giả:</span> 
+        <span class="author-name">{{ book.author }}</span>
+      </div>
+      
+      <div class="price-rating-section">
+        <div class="price-container">
+          <!-- Hiển thị giá gốc nếu có khuyến mãi hoặc discount -->
+          <div *ngIf="bookPromotion || book.discount" class="original-price">
+            {{ book.price | currency:'VND':'symbol':'1.0-0' }}
+          </div>
+          
+          <!-- Hiển thị giá sau khuyến mãi -->
+          <div class="price" [class.discounted]="bookPromotion || book.discount">
+            <ng-container *ngIf="bookPromotion && discountedPrice; else checkOriginalDiscount">
+              {{ discountedPrice | currency:'VND':'symbol':'1.0-0' }}
+            </ng-container>
+            <ng-template #checkOriginalDiscount>
+              <ng-container *ngIf="book.discount; else regularPrice">
+                {{ (book.price * (1 - book.discount/100)) | currency:'VND':'symbol':'1.0-0' }}
+              </ng-container>
+              <ng-template #regularPrice>
+                {{ book.price | currency:'VND':'symbol':'1.0-0' }}
+              </ng-template>
+            </ng-template>
+          </div>
+          
+          <!-- Hiển thị badge khuyến mãi -->
+          <ng-container *ngIf="bookPromotion && bookPromotion.discountPercent; else originalBadge">
+            <div class="discount-badge">
+              -{{ bookPromotion.discountPercent }}%
+            </div>
+          </ng-container>
+          <ng-template #originalBadge>
+            <div *ngIf="book.discount" class="discount-badge">
+              -{{ book.discount }}%
+            </div>
+          </ng-template>
+        </div>
+        
+        <div class="rating" *ngIf="book.rating">
+          <span class="stars">
+            <i class="fas fa-star" *ngFor="let i of [1, 2, 3, 4, 5]" 
+               [class.text-muted]="i > (book.rating || 0)"></i>
+          </span>
+          <span class="rating-value">{{ book.rating }}/5</span>
+        </div>
+      </div>
+      
+      <!-- Phần khuyến mãi -->
+      <div class="promotions-section" *ngIf="book.promotions && book.promotions.length > 0">
+        <h3 class="promotions-title">
+          <i class="fas fa-tags"></i> Khuyến mãi đặc biệt
+        </h3>
+        <div class="promotions-list">
+          <div class="promotion-item" *ngFor="let promo of book.promotions">
+            <div class="promotion-icon" [ngClass]="promo.type ? getPromotionIconClass(promo.type) : ''">
+              <i [class]="promo.type ? getPromotionIcon(promo.type) : 'fas fa-tag'"></i>
+            </div>
+            <div class="promotion-content">
+              <div class="promotion-title">{{ promo.title }}</div>
+              <div class="promotion-description">{{ promo.description }}</div>
+              <div class="promotion-date">
+                Thời gian: {{ promo.startDate | date:'dd/MM/yyyy' }} - {{ promo.endDate | date:'dd/MM/yyyy' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="book-details">
+        <div class="detail-item">
+          <span class="detail-label">Thể loại:</span>
+          <span class="detail-value">{{ book.category | titlecase }}</span>
+        </div>
+        
+        <div class="detail-item">
+          <span class="detail-label">Ngày xuất bản:</span>
+          <span class="detail-value">{{ book.publishedDate | date:'dd/MM/yyyy' }}</span>
+        </div>
+        
+        <div class="detail-item">
+          <span class="detail-label">Số trang:</span>
+          <span class="detail-value">{{ book.pages }}</span>
+        </div>
+        
+        <div class="detail-item">
+          <span class="detail-label">ISBN:</span>
+          <span class="detail-value">{{ book.isbn }}</span>
+        </div>
+        
+        <div class="detail-item">
+          <span class="detail-label">Tình trạng:</span>
+          <span class="detail-value" [class.in-stock]="book.inStock > 0" [class.out-of-stock]="book.inStock === 0">
+            {{ book.inStock > 0 ? 'Còn hàng (' + book.inStock + ')' : 'Hết hàng' }}
+          </span>
+        </div>
+        
+        <div class="detail-item" *ngIf="book.language">
+          <span class="detail-label">Ngôn ngữ:</span>
+          <span class="detail-value">{{ book.language }}</span>
+        </div>
+      </div>
+      
+      <div class="description">
+        <h3>Mô tả</h3>
+        <p>{{ book.description }}</p>
+      </div>
+      
+      <div class="action-buttons">
+        <button class="btn btn-primary add-to-cart-btn" 
+                [disabled]="book.inStock === 0"
+                (click)="addToCart(book)">
+          <i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng
+        </button>
+        
+        <button class="btn btn-primary-outline download-btn" 
+                [disabled]="isDownloading"
+                (click)="downloadBook(book)">
+          <i class="fas fa-download"></i> Tải xuống
+        </button>
+      </div>
+      
+      <!-- Hiển thị tiến trình tải xuống -->
+      <div *ngIf="isDownloading" class="progress download-progress">
+        <div class="progress-bar" [style.width.%]="downloadProgress">
+          {{ downloadProgress }}%
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Phần sách liên quan -->
+  <div class="related-books-section" *ngIf="relatedBooks.length > 0">
+    <h2>Sách liên quan</h2>
+    <div class="related-books-grid">
+      <div class="related-book-item" *ngFor="let relatedBook of relatedBooks">
+        <a [routerLink]="['/book', relatedBook.id]">
+          <div class="related-book-image">
+            <img [src]="relatedBook.imageUrl" [alt]="relatedBook.title">
+          </div>
+          <div class="related-book-title">{{ relatedBook.title }}</div>
+          <div class="related-book-author">{{ relatedBook.author }}</div>
+          <div class="related-book-price">{{ relatedBook.price | currency:'VND':'symbol':'1.0-0' }}</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading spinner -->
+<div class="loading-container" *ngIf="loading">
+  <div class="spinner"></div>
+  <p>Đang tải thông tin sách...</p>
+</div>
+
+<!-- Thông báo lỗi -->
+<div class="error-message" *ngIf="!loading && !book">
+  <h2>Không tìm thấy sách</h2>
+  <p>Rất tiếc, sách bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.</p>
+  <button class="btn btn-primary" [routerLink]="['/books']">Xem tất cả sách</button>
+</div>

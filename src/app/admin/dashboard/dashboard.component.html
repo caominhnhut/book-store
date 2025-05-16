@@ -1,0 +1,201 @@
+<div class="dashboard-container">
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <h1 class="mb-3">Trang quản trị Vi'sBook</h1>
+      <p class="text-muted">Chào mừng bạn đến với trang quản trị. Xem tổng quan các thông tin quan trọng của cửa hàng.</p>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="card stat-card bg-primary text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h5 class="stat-card-title">Tổng đơn hàng</h5>
+              <h2 class="stat-card-value">{{ totalOrders }}</h2>
+            </div>
+            <div class="stat-card-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+          </div>
+          <div class="stat-card-progress mt-3">
+            <div class="progress">
+              <div 
+                class="progress-bar bg-white" 
+                [style.width]="orderCompletionRate + '%'" 
+                role="progressbar" 
+                [attr.aria-valuenow]="orderCompletionRate" 
+                aria-valuemin="0" 
+                aria-valuemax="100">
+              </div>
+            </div>
+            <div class="mt-1 small">
+              <span class="text-white">{{ orderCompletionRate }}% đã giao</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="card stat-card bg-success text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h5 class="stat-card-title">Doanh thu tháng</h5>
+              <h2 class="stat-card-value">{{ monthlyRevenue | currency:'VND':'symbol':'1.0' }}</h2>
+            </div>
+            <div class="stat-card-icon">
+              <i class="fas fa-money-bill-wave"></i>
+            </div>
+          </div>
+          <div class="stat-card-progress mt-3">
+            <div class="text-white-50">
+              <i class="fas" [class.fa-arrow-up]="revenueChange > 0" [class.fa-arrow-down]="revenueChange < 0"></i>
+              <span>{{ revenueChangePercent }}% so với tháng trước</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="card stat-card bg-info text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h5 class="stat-card-title">Số người dùng</h5>
+              <h2 class="stat-card-value">{{ totalUsers }}</h2>
+            </div>
+            <div class="stat-card-icon">
+              <i class="fas fa-users"></i>
+            </div>
+          </div>
+          <div class="stat-card-progress mt-3">
+            <div class="text-white-50">
+              <i class="fas fa-arrow-up"></i>
+              <span>{{ newUsersPercent }}% người dùng mới trong tháng</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-3">
+      <div class="card stat-card bg-warning text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h5 class="stat-card-title">Số lượng sách</h5>
+              <h2 class="stat-card-value">{{ totalBooks }}</h2>
+            </div>
+            <div class="stat-card-icon">
+              <i class="fas fa-book"></i>
+            </div>
+          </div>
+          <div class="stat-card-progress mt-3">
+            <div class="text-white-50">
+              <span>{{ lowStockPercent }}% sách sắp hết hàng</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Orders -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Đơn hàng gần đây</h5>
+          <a routerLink="/admin/orders" class="btn btn-sm btn-outline-primary">Xem tất cả</a>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Khách hàng</th>
+                <th>Ngày đặt</th>
+                <th>Trạng thái</th>
+                <th>Tổng tiền</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of recentOrders">
+                <td>{{ order.id }}</td>
+                <td>{{ order.customerName }}</td>
+                <td>{{ order.orderDate | date:'dd/MM/yyyy' }}</td>
+                <td>
+                  <span class="badge" [ngClass]="getStatusClass(order.status)">
+                    {{ getStatusText(order.status) }}
+                  </span>
+                </td>
+                <td>{{ order.total | currency:'VND':'symbol':'1.0' }}</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary">Chi tiết</button>
+                </td>
+              </tr>
+              <tr *ngIf="recentOrders.length === 0">
+                <td colspan="6" class="text-center py-3">Không có đơn hàng nào gần đây</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Books -->
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Sách bán chạy</h5>
+          <a routerLink="/admin/books" class="btn btn-sm btn-outline-primary">Quản lý sách</a>
+        </div>
+        <div class="card-body">
+          <div class="top-book-item d-flex align-items-center mb-3" *ngFor="let book of topBooks; let i = index">
+            <div class="top-book-rank">{{ i + 1 }}</div>
+            <div class="top-book-image">
+              <img [src]="book.coverImage" [alt]="book.title" class="img-fluid">
+            </div>
+            <div class="top-book-info flex-grow-1">
+              <h6 class="mb-1">{{ book.title }}</h6>
+              <small class="text-muted">{{ book.author }}</small>
+            </div>
+            <div class="top-book-sales text-end">
+              <h6>{{ book.sales }} bán</h6>
+              <small class="text-success">+{{ book.salesChange }}%</small>
+            </div>
+          </div>
+          <div *ngIf="topBooks.length === 0" class="text-center py-4">
+            <p class="text-muted">Chưa có dữ liệu sách bán chạy</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="mb-0">Thống kê doanh thu</h5>
+        </div>
+        <div class="card-body">
+          <!-- Chart placeholder - in a real app you would use a chart library -->
+          <div class="revenue-chart-placeholder">
+            <div class="text-center py-5">
+              <i class="fas fa-chart-line fa-4x text-muted mb-3"></i>
+              <p class="text-muted">Biểu đồ doanh thu theo tháng</p>
+              <p class="small">(Tích hợp biểu đồ thực tế tại đây)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

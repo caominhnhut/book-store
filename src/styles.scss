@@ -1,1 +1,141 @@
 /* You can add global styles to this file, and also import other style files */
+/* src/styles.scss */
+
+/* Biến CSS cho theme */
+:root {
+    --primary-color: #8A2BE2;     /* Blue Violet - màu chủ đạo */
+    --primary-light: #9F3FFF;     /* Sáng hơn một chút */
+    --primary-dark: #7325C0;      /* Tối hơn một chút */
+    --primary-rgb: 138, 43, 226;  /* RGB values for primary color */
+    --secondary-color: #A555EC;   /* Tím nhạt hơn - màu nhấn phụ */
+    --accent-color: #D09CFA;      /* Tím lavender - màu nhấn nhẹ */
+    --background-color: #ffffff;  /* Nền trắng */
+    --white-color: #ffffff;
+    --light-color: #F3EAFF;       /* Tím rất nhạt cho background nhẹ */
+    --dark-color: #4B0082;        /* Indigo - cho text đậm */
+    --text-color: #4B0082;        /* Indigo - cho text chính */
+    --text-light: #9370DB;        /* Medium Purple - cho text phụ */
+    --border-color: #E6E6FA;      /* Lavender - cho viền */
+}
+
+/* Import Bootstrap */
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~@fortawesome/fontawesome-free/css/all.min.css';
+
+/* Thiết lập toàn cục */
+html {
+    scroll-behavior: smooth; /* Enable smooth scrolling */
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Các class tiện ích cho theme */
+.bg-primary-custom {
+    background-color: var(--primary-color);
+}
+
+.text-primary-custom {
+    color: var(--text-color);
+}
+
+.btn-primary-custom {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--white-color);
+    transition: all 0.3s ease;
+    
+    &:hover {
+        background-color: var(--primary-dark);
+        border-color: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+    }
+}
+
+.btn-outline-primary-custom {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+    
+    &:hover {
+        background-color: var(--primary-color);
+        color: var(--white-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+    }
+}
+
+/* Accent buttons */
+.btn-accent {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--dark-color);
+    transition: all 0.3s ease;
+    
+    &:hover {
+        background-color: darken(#D09CFA, 10%);
+        border-color: darken(#D09CFA, 10%);
+        color: var(--dark-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(208, 156, 250, 0.3);
+    }
+}
+
+/* Thiết lập chung */
+.card {
+    border-radius: 15px;
+    border-color: var(--border-color);
+    background-color: var(--white-color);
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.08);
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(138, 43, 226, 0.12);
+    }
+}
+
+.page-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: var(--white-color);
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.1);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--primary-color);
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+/* Links */
+a {
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+    
+    &:hover {
+        color: var(--primary-dark);
+        text-decoration: none;
+    }
+}
+
+/* Custom Shadows */
+.shadow-custom {
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.08);
+}
+
+/* Custom Gradients */
+.bg-gradient-purple {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+}

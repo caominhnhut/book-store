@@ -1,0 +1,411 @@
+/* Custom styles for header component */
+
+/* Make header fixed at top of page */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000; /* Ensure header is above other content */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+  transition: all 0.3s ease;
+  height: auto; /* Allow height to adjust based on content */
+  min-height: 65px; /* Minimum height to prevent content jumping */
+  
+  &.scrolled {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Deeper shadow when scrolled */
+    min-height: 55px; /* Slightly smaller when scrolled */
+  }
+  
+  /* Media queries for different screen sizes */
+  @media (max-width: 1366px) {
+    min-height: 60px; /* Smaller for MacBook 13" screens */
+    &.scrolled {
+      min-height: 50px;
+    }
+  }
+}
+
+/* Custom background for navbar */
+.bg-primary-custom {
+  background-color: var(--primary-color);
+  transition: all 0.3s ease; /* Smooth transition for scroll effects */
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+}
+
+/* Navbar styles when scrolled */
+.navbar-scrolled {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: var(--primary-dark); /* Slightly darker when scrolled */
+}
+
+/* Media queries for responsive navbar */
+@media (max-width: 1366px) {
+  .bg-primary-custom {
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+}
+
+/* Logo size transitions */
+.logo-large {
+  height: 45px;
+  transition: height 0.3s ease;
+}
+
+.logo-small {
+  height: 36px;
+  transition: height 0.3s ease;
+}
+
+/* Responsive logo sizes */
+@media (max-width: 1366px) {
+  .logo-large {
+    height: 42px;
+  }
+  
+  .logo-small {
+    height: 34px;
+  }
+}
+
+@media (max-width: 992px) {
+  .logo-large {
+    height: 40px;
+  }
+  
+  .logo-small {
+    height: 32px;
+  }
+}
+
+/* Logo styling */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  
+  img {
+    filter: brightness(1.1); /* Make the logo slightly brighter */
+  }
+  
+  span {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+}
+
+/* Adjust the navbar layout */
+.navbar-collapse {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-nav {
+  justify-content: flex-start;
+  margin-right: 1.5rem; /* Increased from 1rem to 1.5rem */
+  
+  .nav-item {
+    margin-right: 0.5rem; /* Add some space between nav items */
+  }
+  
+  .nav-link {
+    font-weight: 500;
+    letter-spacing: 0.2px;
+  }
+  
+  @media (max-width: 992px) {
+    margin-right: 0;
+    width: 100%;
+  }
+}
+
+/* Search form styles */
+.search-form {
+  position: relative;
+  max-width: 400px; /* Increased max-width */
+  
+  .input-group {
+    width: 100%;
+  }
+  
+  @media (max-width: 1366px) {
+    max-width: 320px;
+  }
+  
+  @media (max-width: 1200px) {
+    max-width: 280px;
+  }
+}
+
+/* Right-aligned controls */
+.d-flex.align-items-center {
+  margin-left: auto; /* Push to the right edge */
+}
+
+.search-form {
+  position: relative;
+  margin-right: 0.75rem; /* Standard me-3 spacing */
+  
+  .input-group {
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
+    overflow: hidden;
+  }
+
+  .form-control {
+    border-radius: 50px;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-color: #fff;
+    padding-left: 15px;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+    
+    &:focus {
+      box-shadow: none;
+      border-color: var(--primary-light);
+    }
+  }
+
+  .btn {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    background-color: #fff;
+    border-color: #fff;
+    box-shadow: none;
+    transition: all 0.2s;
+    
+    &:hover {
+      background-color: var(--light-color);
+      border-color: var(--light-color);
+      color: var(--primary-color);
+    }
+    
+    i {
+      color: var(--primary-color);
+    }
+  }
+}
+
+/* Make navbar dropdown hover effect */
+.nav-item {
+  transition: all 0.3s;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Language dropdown styling */
+.lang-dropdown {
+  .btn {
+    padding: 0.375rem 0.375rem; /* Use smaller padding */
+    font-size: 1rem;
+    height: 38px; /* Match the height of other buttons */
+    display: flex;
+    align-items: center;
+    
+    span {
+      font-size: 1.2rem; /* Make flag emoji slightly larger */
+    }
+  }
+  
+  .dropdown-menu {
+    min-width: 120px; /* Ensure dropdown is wide enough */
+    
+    .dropdown-item {
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      
+      &:hover {
+        background-color: rgba(var(--primary-rgb), 0.1);
+      }
+      
+      &:active {
+        background-color: rgba(var(--primary-rgb), 0.2);
+      }
+    }
+  }
+}
+
+/* Login button styling */
+.btn-outline-light {
+  white-space: nowrap; /* Prevent text wrapping */
+  
+  .dropdown-item {
+    cursor: pointer;
+    
+    &:hover {
+      background-color: rgba(var(--primary-rgb), 0.1);
+    }
+    
+    &:active {
+      background-color: rgba(var(--primary-rgb), 0.2);
+    }
+  }
+  
+  .dropdown-item {
+    cursor: pointer;
+    
+    &:hover {
+      background-color: rgba(var(--primary-rgb), 0.1);
+    }
+    
+    &:active {
+      background-color: rgba(var(--primary-rgb), 0.2);
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    flex-direction: column;
+  }
+  
+  .navbar-nav {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .d-flex.align-items-center {
+    width: 100%;
+    margin-left: 0; /* Reset auto margin on mobile */
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .search-form {
+    width: 100%;
+    margin-left: 0; /* Reset negative margin on mobile */
+    order: 1; /* Move search below other elements on mobile */
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .lang-dropdown {
+    order: -1; /* Move language dropdown to the beginning on mobile */
+  }
+}
+
+/* Responsive improvements */
+@media (max-width: 992px) {
+  .navbar-collapse {
+    margin-top: 10px;
+  }
+  
+  .search-form {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .navbar-nav {
+    margin-bottom: 8px;
+  }
+  
+  .d-flex.align-items-center {
+    flex-wrap: wrap;
+  }
+}
+
+/* Specific fixes for MacBook 13" screens */
+@media (min-width: 992px) and (max-width: 1366px) {
+  .search-form {
+    max-width: 200px;
+  }
+  
+  .navbar-nav .nav-link {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+/* Fix header layout and address the overlap issue */
+.navbar {
+  display: flex;
+  
+  .container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-brand {
+    margin-right: 1rem;
+    flex-shrink: 0;
+  }
+  
+  .navbar-collapse {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* Make search form responsive */
+.search-form {
+  width: 350px; /* Increased from 300px to 350px */
+  max-width: 100%;
+  margin-left: auto;
+  
+  .input-group {
+    width: 100%;
+    
+    .form-control {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      height: 38px;
+      font-size: 0.95rem;
+    }
+    
+    .btn {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      height: 38px;
+    }
+  }
+  
+  @media (max-width: 1366px) {
+    width: 320px; /* New size for MacBook 13" */
+  }
+  
+  @media (max-width: 1200px) {
+    width: 280px; /* Increased from 250px to 280px */
+  }
+  
+  @media (max-width: 992px) {
+    width: 100%;
+    margin-right: 0 !important;
+  }
+}
+
+/* Specific adjustments for MacBook 13" screen */
+@media (min-width: 992px) and (max-width: 1366px) {
+  .navbar-brand {
+    margin-right: 10px;
+  }
+  
+  .navbar-nav .nav-link {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 0.95rem;
+  }
+  
+  .order-lg-2 {
+    flex-shrink: 0;
+  }
+}

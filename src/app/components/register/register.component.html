@@ -1,0 +1,149 @@
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h2 class="text-center text-primary-custom mb-4">Đăng ký tài khoản</h2>
+                    
+                    <div *ngIf="errorMessage" class="alert alert-danger">
+                        {{ errorMessage }}
+                    </div>
+                    
+                    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName" class="form-label">Tên</label>
+                                <input 
+                                    type="text" 
+                                    id="firstName" 
+                                    formControlName="firstName" 
+                                    class="form-control" 
+                                    placeholder="Nhập tên"
+                                    [ngClass]="{'is-invalid': submitted && f['firstName'].errors}"
+                                >
+                                <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['firstName'].errors['required']">Tên không được để trống</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName" class="form-label">Họ</label>
+                                <input 
+                                    type="text" 
+                                    id="lastName" 
+                                    formControlName="lastName" 
+                                    class="form-control" 
+                                    placeholder="Nhập họ"
+                                    [ngClass]="{'is-invalid': submitted && f['lastName'].errors}"
+                                >
+                                <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['lastName'].errors['required']">Họ không được để trống</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                formControlName="email" 
+                                class="form-control" 
+                                placeholder="Nhập email"
+                                [ngClass]="{'is-invalid': submitted && f['email'].errors}"
+                            >
+                            <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                                <div *ngIf="f['email'].errors['required']">Email không được để trống</div>
+                                <div *ngIf="f['email'].errors['email']">Email không hợp lệ</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="phoneNumber" class="form-label">Số điện thoại</label>
+                            <input 
+                                type="tel" 
+                                id="phoneNumber" 
+                                formControlName="phoneNumber" 
+                                class="form-control" 
+                                placeholder="Nhập số điện thoại"
+                                [ngClass]="{'is-invalid': submitted && f['phoneNumber'].errors}"
+                            >
+                            <div *ngIf="submitted && f['phoneNumber'].errors" class="invalid-feedback">
+                                <div *ngIf="f['phoneNumber'].errors['required']">Số điện thoại không được để trống</div>
+                                <div *ngIf="f['phoneNumber'].errors['pattern']">Số điện thoại không hợp lệ</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật khẩu</label>
+                            <div class="input-group">
+                                <input 
+                                    [type]="showPassword ? 'text' : 'password'" 
+                                    id="password" 
+                                    formControlName="password" 
+                                    class="form-control" 
+                                    placeholder="Nhập mật khẩu"
+                                    [ngClass]="{'is-invalid': submitted && f['password'].errors}"
+                                >
+                                <span class="input-group-text cursor-pointer" (click)="togglePasswordVisibility()">
+                                    <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                </span>
+                            </div>
+                            <div *ngIf="submitted && f['password'].errors" class="invalid-feedback d-block">
+                                <div *ngIf="f['password'].errors['required']">Mật khẩu không được để trống</div>
+                                <div *ngIf="f['password'].errors['minlength']">Mật khẩu phải có ít nhất 6 ký tự</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                            <div class="input-group">
+                                <input 
+                                    [type]="showConfirmPassword ? 'text' : 'password'" 
+                                    id="confirmPassword" 
+                                    formControlName="confirmPassword" 
+                                    class="form-control" 
+                                    placeholder="Nhập lại mật khẩu"
+                                    [ngClass]="{'is-invalid': submitted && f['confirmPassword'].errors}"
+                                >
+                                <span class="input-group-text cursor-pointer" (click)="toggleConfirmPasswordVisibility()">
+                                    <i class="fas" [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                </span>
+                            </div>
+                            <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback d-block">
+                                <div *ngIf="f['confirmPassword'].errors['required']">Vui lòng xác nhận mật khẩu</div>
+                                <div *ngIf="f['confirmPassword'].errors['mustMatch']">Mật khẩu xác nhận không khớp</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input 
+                                type="checkbox" 
+                                class="form-check-input" 
+                                id="agreeTerms" 
+                                formControlName="agreeTerms"
+                                [ngClass]="{'is-invalid': submitted && f['agreeTerms'].errors}"
+                            >
+                            <label class="form-check-label" for="agreeTerms">
+                                Tôi đồng ý với <a href="#">Điều khoản sử dụng</a> và <a href="#">Chính sách bảo mật</a>
+                            </label>
+                            <div *ngIf="submitted && f['agreeTerms'].errors" class="invalid-feedback">
+                                <div *ngIf="f['agreeTerms'].errors['requiredTrue']">Bạn phải đồng ý với các điều khoản để tiếp tục</div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn btn-primary-custom btn-lg" [disabled]="loading">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                                Đăng ký
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3 bg-light">
+                    <p class="mb-0">Đã có tài khoản? <a routerLink="/login" class="text-decoration-none fw-bold">Đăng nhập</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

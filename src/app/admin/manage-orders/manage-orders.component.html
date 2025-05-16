@@ -1,0 +1,160 @@
+<div class="orders-container">
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <h1 class="mb-3">Quản lý đơn hàng</h1>
+      <p class="text-muted">Theo dõi và xử lý đơn hàng từ khách hàng.</p>
+    </div>
+    <div class="col-md-4 text-end">
+      <button class="btn btn-outline-primary">
+        <i class="fas fa-file-export me-1"></i> Xuất báo cáo
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter and Search -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label for="searchOrder" class="form-label">Tìm kiếm</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="searchOrder" placeholder="Theo mã đơn hoặc tên khách..."
+                  [(ngModel)]="searchTerm" (input)="filterOrders()">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="statusFilter" class="form-label">Trạng thái</label>
+          <select class="form-select" id="statusFilter" [(ngModel)]="statusFilter" (change)="filterOrders()">
+            <option value="">Tất cả trạng thái</option>
+            <option value="pending">Chờ xử lý</option>
+            <option value="processing">Đang xử lý</option>
+            <option value="shipped">Đang giao</option>
+            <option value="delivered">Đã giao</option>
+            <option value="cancelled">Đã hủy</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="dateFilter" class="form-label">Thời gian</label>
+          <select class="form-select" id="dateFilter" [(ngModel)]="dateFilter" (change)="filterOrders()">
+            <option value="all">Tất cả thời gian</option>
+            <option value="today">Hôm nay</option>
+            <option value="yesterday">Hôm qua</option>
+            <option value="week">7 ngày qua</option>
+            <option value="month">30 ngày qua</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="sortBy" class="form-label">Sắp xếp theo</label>
+          <select class="form-select" id="sortBy" [(ngModel)]="sortBy" (change)="filterOrders()">
+            <option value="-orderDate">Mới nhất trước</option>
+            <option value="orderDate">Cũ nhất trước</option>
+            <option value="-total">Tổng tiền (cao-thấp)</option>
+            <option value="total">Tổng tiền (thấp-cao)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead class="table-light">
+          <tr>
+            <th style="width: 80px;">Mã đơn</th>
+            <th style="min-width: 150px;">Khách hàng</th>
+            <th>Ngày đặt</th>
+            <th>Tổng tiền</th>
+            <th>Thanh toán</th>
+            <th>Trạng thái</th>
+            <th style="width: 100px;">Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders">
+            <td><strong>#{{ order.id }}</strong></td>
+            <td>
+              <div>{{ order.customerName }}</div>
+              <div class="small text-muted">{{ order.customerEmail }}</div>
+            </td>
+            <td>
+              <div>{{ order.orderDate | date:'dd/MM/yyyy' }}</div>
+              <div class="small text-muted">{{ order.orderDate | date:'HH:mm' }}</div>
+            </td>
+            <td>{{ order.total | currency:'VND':'symbol':'1.0' }}</td>
+            <td>
+              <span [ngClass]="getPaymentStatusClass(order.paymentStatus)">
+                {{ getPaymentStatusText(order.paymentStatus) }}
+              </span>
+            </td>
+            <td>
+              <span class="badge" [ngClass]="getOrderStatusClass(order.status)">
+                {{ getOrderStatusText(order.status) }}
+              </span>
+            </td>
+            <td>
+              <div class="btn-group">
+                <button class="btn btn-sm btn-outline-primary" (click)="viewOrderDetails(order)">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="#" (click)="updateOrderStatus(order, 'processing'); $event.preventDefault()">
+                    <i class="fas fa-hourglass-half me-2 text-primary"></i> Đang xử lý
+                  </a></li>
+                  <li><a class="dropdown-item" href="#" (click)="updateOrderStatus(order, 'shipped'); $event.preventDefault()">
+                    <i class="fas fa-shipping-fast me-2 text-info"></i> Đang giao
+                  </a></li>
+                  <li><a class="dropdown-item" href="#" (click)="updateOrderStatus(order, 'delivered'); $event.preventDefault()">
+                    <i class="fas fa-check-circle me-2 text-success"></i> Đã giao
+                  </a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#" (click)="updateOrderStatus(order, 'cancelled'); $event.preventDefault()">
+                    <i class="fas fa-times-circle me-2 text-danger"></i> Hủy đơn
+                  </a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="filteredOrders.length === 0">
+            <td colspan="7" class="text-center py-4">
+              <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
+              <p class="mb-0">Không tìm thấy đơn hàng nào phù hợp với tiêu chí tìm kiếm</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="d-flex justify-content-between align-items-center mt-4">
+    <div class="text-muted">
+      Hiển thị {{ filteredOrders.length }} trong tổng số {{ orders.length }} đơn hàng
+    </div>
+    <nav aria-label="Page navigation">
+      <ul class="pagination pagination-sm">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Order Detail Modal (placeholder) -->
+  <!-- In a real application, create a proper component for this modal -->
+</div>

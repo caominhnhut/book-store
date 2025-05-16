@@ -1,0 +1,66 @@
+<div class="admin-container">
+  <!-- Admin Navigation Sidebar -->
+  <div class="admin-sidebar">
+    <div class="admin-sidebar-header">
+      <h3 class="mb-0">Vi'sBook Admin</h3>
+    </div>
+    <div class="admin-sidebar-content">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/admin/dashboard" routerLinkActive="active">
+            <i class="fas fa-tachometer-alt"></i> Tổng quan
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/admin/books" routerLinkActive="active">
+            <i class="fas fa-book"></i> Quản lý sách
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/admin/orders" routerLinkActive="active">
+            <i class="fas fa-shopping-cart"></i> Đơn hàng
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/admin/users" routerLinkActive="active">
+            <i class="fas fa-users"></i> Người dùng
+          </a>
+        </li>
+        <li class="nav-item mt-5">
+          <a class="nav-link" routerLink="/" target="_blank">
+            <i class="fas fa-external-link-alt"></i> Xem trang chính
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="admin-content">
+    <!-- Admin Header -->
+    <header class="admin-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2 class="page-title">Admin Dashboard</h2>
+        </div>
+        <div class="d-flex align-items-center">
+          <div class="dropdown me-3">
+            <button class="btn btn-link text-dark dropdown-toggle" type="button" id="adminUserDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-user-circle me-1"></i> Admin User
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminUserDropdown">
+              <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog me-2"></i> Cài đặt</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" (click)="logout()"><i class="fas fa-sign-out-alt me-2"></i> Đăng xuất</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="admin-main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

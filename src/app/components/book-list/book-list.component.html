@@ -1,0 +1,89 @@
+<div class="book-list-container">
+  <div class="main-content">
+    <!-- Sidebar danh mục sách -->
+    <div class="categories-sidebar">
+      <div class="categories-header">
+        <h2>
+          <span>Danh mục sách</span>
+          <span class="total-books">{{ totalAllBooks }}</span>
+        </h2>
+        <button *ngIf="selectedCategories.length > 0" 
+                class="btn btn-clear-filter" 
+                (click)="resetFilters()">
+          <i class="fas fa-times-circle"></i> Xóa bộ lọc
+        </button>
+      </div>
+      <ul class="category-list">
+        <li *ngFor="let category of categories">
+          <div class="category-item">
+            <div class="custom-checkbox">
+              <input 
+                type="checkbox" 
+                [id]="'cat-' + category.id"
+                [checked]="category.selected"
+                (change)="toggleCategorySelection(category)">
+              <label [for]="'cat-' + category.id" class="checkbox-custom">
+                <i class="fas fa-check"></i>
+              </label>
+            </div>
+            <a [class.active]="selectedCategory === category.id || category.selected" (click)="selectCategory(category.id)">
+              <span class="category-name">{{ getVietnameseCategoryName(category) }}</span>
+              <span class="category-count">{{ category.count }}</span>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    
+    <!-- Danh sách sách -->
+    <div class="books-content">
+      <h1>{{ selectedCategoryName }}</h1>
+      
+      <div *ngIf="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Đang tải sách...</p>
+      </div>
+      
+      <div *ngIf="!loading && books.length === 0" class="no-books">
+        <p><i class="fas fa-book-open mr-2"></i> Không có sách nào trong danh mục này.</p>
+      </div>
+      
+      <div class="books-grid">
+        <div class="book-card h-100" *ngFor="let book of books; let i = index" [style.animation-delay]="i * 0.05 + 's'">
+          <div class="book-image-wrapper" [style.background-image]="'url(' + book.imageUrl + ')'">
+            <!-- Tag hiển thị thông tin trọn bộ nếu là sách thuộc bộ -->
+            <span *ngIf="book.isPartOfSeries" class="badge bg-primary-custom">
+              {{ book.seriesPosition }}/{{ book.seriesTotal }}
+            </span>
+            <div class="book-title-simple">{{ book.title }}</div>
+            <div class="book-info-overlay">
+              <h5 class="book-title">{{ book.title }}</h5>
+              <p class="book-author">{{ book.author }}</p>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="fw-bold book-price">{{ book.price | currency:'VND':'symbol':'1.0-0' }}</span>
+                <div class="book-rating" *ngIf="book.rating">
+                  <i class="fas fa-star"></i>
+                  <span>{{ book.rating }}</span>
+                </div>
+              </div>
+              <div class="book-actions">
+                <a [routerLink]="['/book', book.id]" class="btn-details">Chi tiết</a>
+                <button class="btn-cart" (click)="addToCart(book)" title="Thêm vào giỏ">
+                  <i class="fas fa-cart-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Nút "Hiển thị thêm" -->
+      <div class="load-more-container" *ngIf="hasMoreBooks()">
+        <button class="load-more-btn" (click)="loadMore()" [disabled]="loading">
+          <i class="fas fa-sync-alt" *ngIf="loading"></i>
+          {{ loading ? 'Đang tải...' : 'Hiển thị thêm' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
