@@ -9,57 +9,26 @@
                         {{ errorMessage }}
                     </div>
                     
+                    <div *ngIf="successMessage" class="alert alert-success">
+                        {{ successMessage }}
+                    </div>
+                    
                     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="firstName" class="form-label">Tên</label>
-                                <input 
-                                    type="text" 
-                                    id="firstName" 
-                                    formControlName="firstName" 
-                                    class="form-control" 
-                                    placeholder="Nhập tên"
-                                    [ngClass]="{'is-invalid': submitted && f['firstName'].errors}"
-                                >
-                                <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['firstName'].errors['required']">Tên không được để trống</div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-6 mb-3">
-                                <label for="lastName" class="form-label">Họ</label>
-                                <input 
-                                    type="text" 
-                                    id="lastName" 
-                                    formControlName="lastName" 
-                                    class="form-control" 
-                                    placeholder="Nhập họ"
-                                    [ngClass]="{'is-invalid': submitted && f['lastName'].errors}"
-                                >
-                                <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['lastName'].errors['required']">Họ không được để trống</div>
-                                </div>
+                        <div class="mb-3">
+                            <input 
+                                type="text" 
+                                id="fullName" 
+                                formControlName="fullName" 
+                                class="form-control" 
+                                placeholder="Nhập họ tên"
+                                [ngClass]="{'is-invalid': submitted && f['fullName'].errors}"
+                            >
+                            <div *ngIf="submitted && f['fullName'].errors" class="invalid-feedback">
+                                <div *ngIf="f['fullName'].errors['required']">Họ tên không được để trống</div>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input 
-                                type="email" 
-                                id="email" 
-                                formControlName="email" 
-                                class="form-control" 
-                                placeholder="Nhập email"
-                                [ngClass]="{'is-invalid': submitted && f['email'].errors}"
-                            >
-                            <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-                                <div *ngIf="f['email'].errors['required']">Email không được để trống</div>
-                                <div *ngIf="f['email'].errors['email']">Email không hợp lệ</div>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="phoneNumber" class="form-label">Số điện thoại</label>
                             <input 
                                 type="tel" 
                                 id="phoneNumber" 
@@ -73,16 +42,30 @@
                                 <div *ngIf="f['phoneNumber'].errors['pattern']">Số điện thoại không hợp lệ</div>
                             </div>
                         </div>
+
+                        <div class="mb-3">
+                            <input 
+                                type="email" 
+                                id="email" 
+                                formControlName="email" 
+                                class="form-control" 
+                                placeholder="Nhập email *"
+                                [ngClass]="{'is-invalid': submitted && f['email'].errors}"
+                            >
+                            <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                                <div *ngIf="f['email'].errors['required']">Email không được để trống</div>
+                                <div *ngIf="f['email'].errors['email']">Email không hợp lệ</div>
+                            </div>
+                        </div>
                         
                         <div class="mb-3">
-                            <label for="password" class="form-label">Mật khẩu</label>
                             <div class="input-group">
                                 <input 
                                     [type]="showPassword ? 'text' : 'password'" 
                                     id="password" 
                                     formControlName="password" 
                                     class="form-control" 
-                                    placeholder="Nhập mật khẩu"
+                                    placeholder="Nhập mật khẩu *"
                                     [ngClass]="{'is-invalid': submitted && f['password'].errors}"
                                 >
                                 <span class="input-group-text cursor-pointer" (click)="togglePasswordVisibility()">
@@ -96,7 +79,6 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
                             <div class="input-group">
                                 <input 
                                     [type]="showConfirmPassword ? 'text' : 'password'" 

@@ -21,6 +21,10 @@
   box-shadow: 0 0 0 0.2rem rgba(138, 43, 226, 0.25);
 }
 
+.form-control, .input-group .form-control {
+  height: 50px;
+}
+
 .input-group-text {
   border-color: #ced4da;
   

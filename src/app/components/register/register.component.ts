@@ -13,6 +13,7 @@ export class RegisterComponent implements OnInit {
   loading = false;
   submitted = false;
   errorMessage = '';
+  successMessage = '';
   showPassword = false;
   showConfirmPassword = false;
 
@@ -25,8 +26,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     // Initialize the registration form
     this.registerForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      fullName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10,11}$')]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -84,9 +84,14 @@ export class RegisterComponent implements OnInit {
 
     this.loading = true;
 
+    // Split the full name into first name and last name for compatibility
+    const fullNameParts = this.f['fullName'].value.split(' ');
+    const lastName = fullNameParts.slice(0, -1).join(' ') || fullNameParts[0]; // Everything except the last part, or the only part if just one word
+    const firstName = fullNameParts.length > 1 ? fullNameParts[fullNameParts.length - 1] : ''; // Last part, or empty if just one word
+
     const user = {
-      firstName: this.f['firstName'].value,
-      lastName: this.f['lastName'].value,
+      firstName: firstName,
+      lastName: lastName,
       email: this.f['email'].value,
       phoneNumber: this.f['phoneNumber'].value
     };
@@ -96,8 +101,10 @@ export class RegisterComponent implements OnInit {
     this.authService.register(user, password)
       .subscribe({
         next: () => {
-          // Navigate to home page after successful registration
-          this.router.navigate(['/']);
+          this.loading = false;
+          this.successMessage = 'Đăng ký thành công! Vui lòng kiểm tra email của bạn để xác thực tài khoản.';
+          this.registerForm.reset();
+          this.submitted = false;
         },
         error: err => {
           this.errorMessage = err.message || 'Đăng ký thất bại. Vui lòng thử lại.';

@@ -1,0 +1,40 @@
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-body p-4 text-center">
+                    <h2 class="text-primary-custom mb-4">Xác thực Email</h2>
+                    
+                    <div *ngIf="verifying">
+                        <div class="d-flex justify-content-center mb-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Đang xác thực...</span>
+                            </div>
+                        </div>
+                        <p>Đang xác thực email của bạn, vui lòng đợi...</p>
+                    </div>
+                    
+                    <div *ngIf="!verifying && success">
+                        <div class="text-success mb-4">
+                            <i class="fas fa-check-circle fa-5x"></i>
+                        </div>
+                        <h3 class="text-success mb-3">Email đã được xác thực thành công!</h3>
+                        <p class="mb-4">Tài khoản của bạn đã được kích hoạt. Bây giờ bạn có thể đăng nhập và sử dụng các dịch vụ của chúng tôi.</p>
+                        <button (click)="goToLogin()" class="btn btn-primary-custom btn-lg">
+                            Đăng nhập ngay
+                        </button>
+                    </div>
+                    
+                    <div *ngIf="!verifying && !success">
+                        <div class="text-danger mb-4">
+                            <i class="fas fa-times-circle fa-5x"></i>
+                        </div>
+                        <h3 class="text-danger mb-3">Xác thực không thành công</h3>
+                        <p class="mb-4">{{ errorMessage }}</p>
+                        <p>Vui lòng kiểm tra lại đường dẫn hoặc liên hệ với bộ phận hỗ trợ nếu bạn cần trợ giúp.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

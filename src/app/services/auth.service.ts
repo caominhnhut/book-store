@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import { User } from '../models/user';
+import { delay } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -187,5 +187,16 @@ export class AuthService {
   loginAsUser(): void {
     this.setToken('mock_user_token');
     this.setCurrentUser(this.mockUser);
+  }
+
+  // Method for email verification
+  verifyEmail(token: string): Observable<any> {
+    // In a real environment, this would connect to the API
+    // return this.http.get<{success: boolean}>(`${this.apiUrl}/verify-email?token=${token}`);
+    
+    // Mock verification success
+    return of({ success: true }).pipe(
+      delay(1500) // Simulate network delay
+    );
   }
 }
