@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -65,22 +65,40 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    const username = this.f['username'].value;
+    const email = this.f['username'].value; // Using the form field value as email
     const password = this.f['password'].value;
 
+    console.log('Login attempt with email:', email);
+
     // For demo purposes - admin login with special credentials
-    if (username === 'admin@bookstore.com' && password === 'admin123') {
+    if (email === 'admin@bookstore.com' && password === 'admin123') {
+      console.log('Admin login detected, using mock admin user');
       this.authService.loginAsAdmin();
       this.router.navigate(['/admin']);
+      this.loading = false;
+      return;
+    }
+
+    // For demo purposes - regular user login with special credentials
+    if (email === 'user@bookstore.com' && password === 'user123') {
+      console.log('User login detected, using mock regular user');
+      this.authService.loginAsUser();
+      this.router.navigate([this.returnUrl]);
+      this.loading = false;
       return;
     }
 
     // Regular login flow
-    this.authService.login(username, password)
+    this.authService.login(email, password)
       .subscribe({
         next: (response) => {
+          console.log('Login successful:', response);
+          
+          // Get the current user
+          const currentUser = this.authService.getCurrentUser();
+          
           // Check if the user has admin role for admin login attempt
-          if (this.isAdminLogin && response.user.role !== 'admin') {
+          if (this.isAdminLogin && currentUser?.role !== 'admin') {
             this.errorMessage = 'Bạn không có quyền truy cập trang quản trị.';
             this.loading = false;
             this.authService.logout();
@@ -88,14 +106,17 @@ export class LoginComponent implements OnInit {
           }
 
           // Navigate to returnUrl or appropriate page based on role
-          if (response.user.role === 'admin') {
+          if (currentUser?.role === 'admin') {
             this.router.navigate(['/admin']);
           } else {
             this.router.navigate([this.returnUrl]);
           }
+          
+          this.loading = false;
         },
-        error: err => {
-          this.errorMessage = err.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
+        error: (error) => {
+          console.error('Login error:', error);
+          this.errorMessage = error.error?.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
           this.loading = false;
         }
       });
@@ -103,7 +124,15 @@ export class LoginComponent implements OnInit {
 
   // Helper method for development/testing
   loginAsMockAdmin(): void {
+    console.log('Using mock admin login');
     this.authService.loginAsAdmin();
     this.router.navigate(['/admin']);
+  }
+
+  // Helper method for development/testing
+  loginAsMockUser(): void {
+    console.log('Using mock user login');
+    this.authService.loginAsUser();
+    this.router.navigate(['/']);
   }
 }

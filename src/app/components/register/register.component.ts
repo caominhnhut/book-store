@@ -29,7 +29,12 @@ export class RegisterComponent implements OnInit {
       fullName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10,11}$')]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [
+        Validators.required, 
+        Validators.minLength(8),
+        // Regex pattern to match backend requirements: at least one lowercase, one uppercase, one digit, one special char
+        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$')
+      ]],
       confirmPassword: ['', Validators.required],
       agreeTerms: [false, Validators.requiredTrue]
     }, {
@@ -84,30 +89,29 @@ export class RegisterComponent implements OnInit {
 
     this.loading = true;
 
-    // Split the full name into first name and last name for compatibility
-    const fullNameParts = this.f['fullName'].value.split(' ');
-    const lastName = fullNameParts.slice(0, -1).join(' ') || fullNameParts[0]; // Everything except the last part, or the only part if just one word
-    const firstName = fullNameParts.length > 1 ? fullNameParts[fullNameParts.length - 1] : ''; // Last part, or empty if just one word
-
     const user = {
-      firstName: firstName,
-      lastName: lastName,
       email: this.f['email'].value,
-      phoneNumber: this.f['phoneNumber'].value
+      phoneNumber: this.f['phoneNumber'].value,
+      fullName: this.f['fullName'].value // Keeping fullName but not splitting it
     };
 
     const password = this.f['password'].value;
 
     this.authService.register(user, password)
       .subscribe({
-        next: () => {
+        next: (response) => {
           this.loading = false;
-          this.successMessage = 'Đăng ký thành công! Vui lòng kiểm tra email của bạn để xác thực tài khoản.';
+          // Update success message to match the new flow
+          this.successMessage = 'Đăng ký thành công! Vui lòng kiểm tra email của bạn để xác thực tài khoản trước khi đăng nhập.';
           this.registerForm.reset();
           this.submitted = false;
+          
+          // No auto-redirect since user needs to verify email first
         },
-        error: err => {
-          this.errorMessage = err.message || 'Đăng ký thất bại. Vui lòng thử lại.';
+        error: (error) => {
+          console.error('Registration error:', error);
+          // Extract proper error message from API response
+          this.errorMessage = error.error?.error || 'Đăng ký thất bại. Vui lòng thử lại.';
           this.loading = false;
         }
       });

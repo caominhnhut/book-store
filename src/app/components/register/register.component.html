@@ -74,7 +74,8 @@
                             </div>
                             <div *ngIf="submitted && f['password'].errors" class="invalid-feedback d-block">
                                 <div *ngIf="f['password'].errors['required']">Mật khẩu không được để trống</div>
-                                <div *ngIf="f['password'].errors['minlength']">Mật khẩu phải có ít nhất 6 ký tự</div>
+                                <div *ngIf="f['password'].errors['minlength']">Mật khẩu phải có ít nhất 8 ký tự</div>
+                                <div *ngIf="f['password'].errors['pattern']">Mật khẩu phải chứa ít nhất một chữ thường, một chữ hoa, một số và một ký tự đặc biệt</div>
                             </div>
                         </div>
                         

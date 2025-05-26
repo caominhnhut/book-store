@@ -4,9 +4,9 @@
             <div class="card shadow">
                 <div class="card-body p-4">
                     <h2 class="text-center text-primary-custom mb-4">
-    <span *ngIf="isAdminLogin">Đăng nhập quản trị</span>
-    <span *ngIf="!isAdminLogin">Đăng nhập</span>
-</h2>
+                        <span *ngIf="isAdminLogin">Đăng nhập quản trị</span>
+                        <span *ngIf="!isAdminLogin">Đăng nhập</span>
+                    </h2>
                     
                     <div *ngIf="errorMessage" class="alert alert-danger">
                         {{ errorMessage }}

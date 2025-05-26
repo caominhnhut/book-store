@@ -18,7 +18,7 @@ export class ManageUsersComponent implements OnInit {
   // Filters
   searchTerm: string = '';
   roleFilter: string = '';
-  sortBy: string = 'firstName';
+  sortBy: string = 'fullName';
   sortDirection: 'asc' | 'desc' = 'asc';
 
   constructor(private formBuilder: FormBuilder) { }
@@ -33,8 +33,7 @@ export class ManageUsersComponent implements OnInit {
     this.users = [
       {
         id: 1,
-        firstName: 'Nguyễn',
-        lastName: 'Admin',
+        fullName: 'Nguyễn Admin',
         email: 'admin@bookstore.com',
         phoneNumber: '0987654321',
         role: 'admin',
@@ -48,8 +47,7 @@ export class ManageUsersComponent implements OnInit {
       },
       {
         id: 2,
-        firstName: 'Trần',
-        lastName: 'Manager',
+        fullName: 'Trần Manager',
         email: 'manager@bookstore.com',
         phoneNumber: '0912345678',
         role: 'manager',
@@ -63,8 +61,7 @@ export class ManageUsersComponent implements OnInit {
       },
       {
         id: 3,
-        firstName: 'Lê',
-        lastName: 'User',
+        fullName: 'Lê User',
         email: 'user1@example.com',
         phoneNumber: '0901234567',
         role: 'user',
@@ -78,8 +75,7 @@ export class ManageUsersComponent implements OnInit {
       },
       {
         id: 4,
-        firstName: 'Phạm',
-        lastName: 'Customer',
+        fullName: 'Phạm Customer',
         email: 'customer@example.com',
         phoneNumber: '0898765432',
         role: 'user',
@@ -93,8 +89,7 @@ export class ManageUsersComponent implements OnInit {
       },
       {
         id: 5,
-        firstName: 'Hoàng',
-        lastName: 'Reader',
+        fullName: 'Hoàng Reader',
         email: 'reader@example.com',
         phoneNumber: '0976543210',
         role: 'user',
@@ -118,8 +113,7 @@ export class ManageUsersComponent implements OnInit {
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
       filtered = filtered.filter(user => 
-        user.firstName.toLowerCase().includes(term) || 
-        user.lastName.toLowerCase().includes(term) ||
+        user.fullName.toLowerCase().includes(term) || 
         user.email.toLowerCase().includes(term) ||
         (user.phoneNumber && user.phoneNumber.includes(term))
       );
@@ -154,8 +148,7 @@ export class ManageUsersComponent implements OnInit {
   initializeForm(): void {
     this.userForm = this.formBuilder.group({
       id: [0],
-      firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
+      fullName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.pattern(/^(0[3-9][0-9]{8}|1[89]00[0-9]{6})$/)]],
       role: ['user', Validators.required],
@@ -181,8 +174,7 @@ export class ManageUsersComponent implements OnInit {
   createNewUser(): void {
     this.selectedUser = {
       id: 0, // Will be assigned by backend
-      firstName: '',
-      lastName: '',
+      fullName: '',
       email: '',
       phoneNumber: '',
       role: 'user',
